@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Dashboard</h2>
+<p>Welcome, {{ user.username }}!</p>
+<p>Email: {{ user.email }}</p>
+<div class="mt-4">
+    <a href="{% url 'vote' %}" class="btn btn-success btn-lg">Let's Vote</a>
+</div>
+{% if user.is_staff %}
+    <a href="{% url 'candidate_list' %}" class="btn btn-warning text-white mt-3">Manage Candidates</a>
+{% endif %}
+{% endblock %}

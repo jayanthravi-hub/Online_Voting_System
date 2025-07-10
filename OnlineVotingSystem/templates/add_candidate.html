@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Add Candidate</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label>Name:</label>
+        <input type="text" class="form-control" name="name" required>
+    </div>
+    <div class="mb-3">
+        <label>Party:</label>
+        <input type="text" class="form-control" name="party" required>
+    </div>
+    <div class="mb-3">
+        <label>Image:</label>
+        <input type="file" class="form-control" name="image" required>
+    </div>
+    <button type="submit" class="btn btn-success">Add</button>
+</form>
+{% endblock %}

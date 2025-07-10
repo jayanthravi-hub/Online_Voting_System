@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Edit Candidate</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label>Name:</label>
+        <input type="text" class="form-control" name="name" value="{{ candidate.name }}" required>
+    </div>
+    <div class="mb-3">
+        <label>Party:</label>
+        <input type="text" class="form-control" name="party" value="{{ candidate.party }}" required>
+    </div>
+    <div class="mb-3">
+        <label>Change Image:</label>
+        <input type="file" class="form-control" name="image">
+    </div>
+    <button type="submit" class="btn btn-success">Update</button>
+</form>
+{% endblock %}

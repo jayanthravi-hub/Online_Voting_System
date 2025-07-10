@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Voting Results</h2>
+
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>Candidate</th>
+            <th>Party</th>
+            <th>Total Votes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for candidate in candidates %}
+        <tr>
+            <td>{{ candidate.name }}</td>
+            <td>{{ candidate.party }}</td>
+            <td>{{ candidate.vote_count }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

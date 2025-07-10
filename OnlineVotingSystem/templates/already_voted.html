@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Vote Already Cast</h2>
+<p>You have already voted. Only one vote per user is allowed.</p>
+<a href="{% url 'dashboard' %}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+{% endblock %}

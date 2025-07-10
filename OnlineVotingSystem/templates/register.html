@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Register</h2>
+<form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="username">Username:</label>
+        <input type="text" class="form-control" name="username" required>
+    </div>
+    <div class="mb-3">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" name="email" required>
+    </div>
+    <div class="mb-3">
+        <label for="password1">Password:</label>
+        <input type="password" class="form-control" name="password1" required>
+    </div>
+    <div class="mb-3">
+        <label for="password2">Confirm Password:</label>
+        <input type="password" class="form-control" name="password2" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+
+{% if error %}
+    <p class="text-danger mt-2">{{ error }}</p>
+{% endif %}
+{% endblock %}
