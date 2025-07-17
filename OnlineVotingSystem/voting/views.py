@@ -3,12 +3,14 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Candidate, Vote
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import get_object_or_404
+
+# from django.contrib.auth.decorators import login_required, user_passes_test
 
 def register(request):
     if request.method == 'POST':
@@ -94,6 +96,7 @@ def results_view(request):
 # from here onwards we have started crud operations.
 
 # add candidates logic
+
 @staff_member_required
 def add_candidate(request):
     if request.method == 'POST':
@@ -138,3 +141,82 @@ def delete_candidate(request, candidate_id):
     candidate = get_object_or_404(Candidate, id=candidate_id)
     candidate.delete()
     return redirect('candidate_list')
+
+# voting/views.py
+
+# from django.contrib.auth.models import User
+# from django.shortcuts import render, redirect, get_object_or_404
+# from django.contrib.auth.decorators import login_required, user_passes_test
+
+# Only admin or staff can access these
+def is_admin(user):
+    return user.is_superuser or user.is_staff
+
+@login_required
+@user_passes_test(is_admin)
+def voter_list(request):
+    voters = User.objects.filter(is_superuser=False)  # exclude superusers
+    return render(request, 'voter_list.html', {'voters': voters})
+
+@login_required
+@user_passes_test(is_admin)
+def voter_add(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        User.objects.create_user(username=username, email=email, password=password)
+        return redirect('voter_list')
+    return render(request, 'voter_form.html')
+
+@login_required
+@user_passes_test(is_admin)
+def voter_update(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    if request.method == 'POST':
+        user.username = request.POST['username']
+        user.email = request.POST['email']
+        user.save()
+        return redirect('voter_list')
+    return render(request, 'voter_form.html', {'user': user})
+
+@login_required
+@user_passes_test(is_admin)
+def voter_delete(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    user.delete()
+    return redirect('voter_list')
+
+# from django.contrib.auth.models import User, Group
+# from django.shortcuts import render, redirect
+# from django.contrib.auth import login
+
+# Create a custom signup form for Admin2
+
+def register_admin2(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+
+        if password1 != password2:
+            return render(request, 'register_admin2.html', {'error': 'Passwords do not match'})
+
+        if User.objects.filter(username=username).exists():
+            return render(request, 'register_admin2.html', {'error': 'Username already exists'})
+
+        user = User.objects.create_user(username=username, email=email, password=password1)
+        user.is_staff = True  #  So they can access staff views
+        user.is_superuser = False  #  No full admin access
+        user.save()
+
+        # Optional: Add to a group called "Admin2"
+        group, created = Group.objects.get_or_create(name='Admin2')
+        user.groups.add(group)
+
+        login(request, user)
+        return redirect('dashboard')
+
+    return render(request, 'register_admin2.html')
+

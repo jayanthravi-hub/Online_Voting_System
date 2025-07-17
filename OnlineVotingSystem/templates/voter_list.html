@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Voter List</h2>
+<a href="{% url 'voter_add' %}" class="btn btn-success mb-3">Add New Voter</a>
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    {% for voter in voters %}
+    <tr>
+        <td>{{ voter.id }}</td>
+        <td>{{ voter.username }}</td>
+        <td>{{ voter.email }}</td>
+        <td>
+            <a href="{% url 'voter_update' voter.id %}" class="btn btn-warning btn-sm">Edit</a>
+            <a href="{% url 'voter_delete' voter.id %}" class="btn btn-danger btn-sm">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

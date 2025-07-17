@@ -1,0 +1,28 @@
+Summary of the Project :
+------------------------
+
+Summary of Views.py Structure
+
+Feature	Function                     Name	                    Access Level
+Voter Register (disabled)	    register	                      Public
+Login / Logout	               login_user, logout_user	       Public / Authenticated
+Home / Dashboard	         home, dashboard	    Home = Public, Dashboard = Auth
+Voting	                             vote_view	                 Authenticated users only
+Results	                            results_view	            Admin only (is_staff)
+Candidates CRUD	            add/edit/delete/list_candidate	    Admin only (is_staff)
+Voters CRUD	             voter_add/list/update/delete	 Admin or Admin2 (is_staff)
+Register Admin2	                   register_admin2	                 Public
+
+
+
+Work flow of the django:-
+--------------------------
+
+
+When a user visits /vote/, Django checks urls.py.
+
+It finds vote_view in views.py.
+
+vote_view uses the Candidate model from models.py to get data.
+
+Then it passes that data to vote.html, which is rendered and sent to the browser.

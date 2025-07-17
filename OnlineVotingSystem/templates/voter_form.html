@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{% if user %}Update{% else %}Add{% endif %} Voter</h2>
+<form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label>Username:</label>
+        <input type="text" name="username" class="form-control" value="{{ user.username|default_if_none:'' }}">
+    </div>
+    <div class="mb-3">
+        <label>Email:</label>
+        <input type="email" name="email" class="form-control" value="{{ user.email|default_if_none:'' }}">
+    </div>
+    {% if not user %}
+    <div class="mb-3">
+        <label>Password:</label>
+        <input type="password" name="password" class="form-control">
+    </div>
+    {% endif %}
+    <button type="submit" class="btn btn-primary">{% if user %}Update{% else %}Add{% endif %}</button>
+</form>
+{% endblock %}

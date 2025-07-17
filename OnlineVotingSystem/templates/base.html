@@ -12,27 +12,45 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
-                    {% if user.is_staff %}
+                    {% if user.is_superuser %}
                         <li class="nav-item">
                             <a class="nav-link btn btn-warning text-white mx-2" href="{% url 'candidate_list' %}">Manage Candidates</a>
                         </li>
                     {% endif %}
+                    {% if user.is_staff %}   /* if we add is_staff means admin2 also can see this */
+                        <a class="nav-link btn btn-warning text-white mx-2" href="{% url 'voter_list' %}">Manage Voters</a>
+                    {% endif %}
+
                     <li class="nav-item"><a class="nav-link btn btn-warning text-white mx-2"  href="{% url 'dashboard' %}">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link btn btn-warning text-white mx-2" href="{% url 'logout' %}">Logout</a></li>
-                    {% if user.is_staff %}
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-warning text-white mx-2" href="{% url 'results' %}">Results</a>
-                        </li>
-                    {% endif %}
+<!--                    {% if user.is_staff %}-->
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link btn btn-warning text-white mx-2" href="{% url 'results' %}">Results</a>-->
+<!--                        </li>-->
+<!--                    {% endif %}-->
                 {% else %}
                     <li class="nav-item"><a class="nav-link btn btn-warning text-white mx-2" href="{% url 'login' %}">Login</a></li>
                     <li class="nav-item"><a class="nav-link btn btn-warning text-white mx-2" href="{% url 'register' %}">Register</a></li>
                 {% endif %}
-            </ul>
-        </div>
-    </nav>
-    <div class="container mt-4">
-        {% block content %}{% endblock %}
+                {% if not user.is_authenticated %}
+    <li class="nav-item">
+        <a class="nav-link btn btn-warning text-white mx-2" href="{% url 'register' %}">Register Voter</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link btn btn-warning text-white mx-2" href="{% url 'register_admin2' %}">Register Admin2</a>
+    </li>
+{% endif %}
+                {% if user.is_superuser %}
+    <li class="nav-item">
+        <a class="nav-link btn btn-warning text-white mx-2" href="{% url 'results' %}">Results</a>
+    </li>
+{% endif %}
+
+        </ul>
     </div>
+</nav>
+<div class="container mt-4">
+    {% block content %}{% endblock %}
+</div>
 </body>
 </html>
